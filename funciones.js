@@ -2,6 +2,7 @@ class ProductManager {
 
     constructor() {
         this.products = [];
+        this.path = path;
     }
 
     getNextId = () => {
@@ -37,6 +38,14 @@ class ProductManager {
     getProductById = (id) => {
         const product = this.products.find((product) => product.id === id);
         console.log((product) ? (`producto encontrado: ${JSON.stringify(product)}`) : ('no se encontró el producto con ese id'));
+    }
+
+    updateProduct = (id) => {
+        
+    }
+
+    deleteProduct = (id) => {
+        
     }
 }
 
