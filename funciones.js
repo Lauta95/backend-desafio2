@@ -1,8 +1,12 @@
+const fs = require('fs');
+const path = require('path');
+
 class ProductManager {
 
     constructor() {
         this.products = [];
-        this.path = path;
+        this.filePath = path.join(__dirname, 'products.json');
+        this.loadProducts();
     }
 
     getNextId = () => {
@@ -50,7 +54,7 @@ class ProductManager {
 }
 
 
-const producto = new ProductManager();
+const producto = new ProductManager('/path/to/data');
 producto.addProduct('titulo', 'description: dsa', 423, 'dsaf', 15, 40)
 producto.addProduct('titulo2', 'description: otra', 200, 'thumbnail', 14, 20,)
 console.log(producto.getProducts());
