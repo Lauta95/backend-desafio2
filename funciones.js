@@ -1,12 +1,11 @@
 const fs = require('fs');
-const path = require('path');
 
 class ProductManager {
 
-    constructor() {
+    constructor(path) {
         this.products = [];
-        this.filePath = path.join(__dirname, 'products.json');
-        this.loadProducts();
+        this.path = path;
+        this.format = 'utf-8';
     }
 
     getNextId = () => {
@@ -33,7 +32,7 @@ class ProductManager {
             code,
             stock,
         }
-        const obligatorios = (!(title && description && price && thumbnail && code && stock)) ? console.log('Error: todos los campos son obligatorios') : this.products.push(agregar);
+        const obligatorios = !(title && description && price && thumbnail && code && stock) ? console.log('Error: todos los campos son obligatorios') : this.products.push(agregar);
         return obligatorios;
     }
 
@@ -54,11 +53,11 @@ class ProductManager {
 }
 
 
-const producto = new ProductManager('/path/to/data');
+const producto = new ProductManager('archivo.json');
 producto.addProduct('titulo', 'description: dsa', 423, 'dsaf', 15, 40)
 producto.addProduct('titulo2', 'description: otra', 200, 'thumbnail', 14, 20,)
 console.log(producto.getProducts());
 // para buscar un id:
-producto.getProductById(3);
+// producto.getProductById(3);
 producto.getProductById(2);
 
