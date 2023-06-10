@@ -40,7 +40,7 @@ class ProductManager {
     getProductById = async (id) => {
         const buscar = await this.getProducts();
         const buscarObj = buscar.find(item => item.id === id);
-        console.log((buscarObj) ? (`producto encontrado ${JSON.stringify(buscarObj)}`) : ('no se encontró ese id'));
+        console.log((buscarObj) ? (`producto encontrado ${JSON.stringify(buscarObj)}`) : ('ERROR: no existe ese id'));
         return buscarObj;
     }
 
@@ -64,7 +64,12 @@ class ProductManager {
     deleteProduct = async (id) => {
         const listDelete = await this.getProducts();
 
-        const newList = listDelete.filter((producto) =>producto.id !== id);
+        const newList = listDelete.filter((producto) => producto.id !== id);
+
+        if(newList.length === listDelete.length){
+            console.log('Error: no existe ese id');
+            return;
+        }
 
         await fs.promises.writeFile(this.path, JSON.stringify(newList));
 
@@ -74,17 +79,16 @@ class ProductManager {
 
 async function crearUsuarios() {
     const nuevoProducto = new ProductManager('archivo.json');
-    await nuevoProducto.addProduct('john wick', 'asesino mafioso', 10, 'thumbnail1', 4324, 20)
-    await nuevoProducto.addProduct('Matrix', 'nueva realidad', 5, 'thumbnail2', 524234, 30)
-
+    // Checkear prime la devolución de un array vacío:
     console.log(await nuevoProducto.getProducts());
-    await nuevoProducto.getProductById(1);
-
-    console.log('Productos antes de la actualización:', await nuevoProducto.getProducts());
-    await nuevoProducto.updateProduct(1, 'title', 'nueva pelicula actualizada2');
-    await nuevoProducto.updateProduct(2, 'title', 'La otra pelicula tambien modificada');
-
-    await nuevoProducto.deleteProduct(1);
+    // Agregar producto nuevo:
+    await nuevoProducto.addProduct('producto prueba', 'este es un producto de prueba', 200, 'sin imagen', 'abc123', 25)
+    // Buscar un producto por su id:
+    await nuevoProducto.getProductById(8);
+    // Para modificar un producto existente
+    await nuevoProducto.updateProduct(10, 'title', 'probando el metodo updateProduct');
+    // Para borrar un id Existente:
+    await nuevoProducto.deleteProduct(2);    
 }
 
 crearUsuarios();
