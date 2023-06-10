@@ -42,6 +42,23 @@ class ProductManager {
         const buscarObj = buscar.find(item => item.id === id);
         console.log((buscarObj) ? (`producto encontrado ${JSON.stringify(buscarObj)}`) : ('no se encontró ese id'));
     }
+
+    updateProduct = async(id, viejoValor, nuevoValor) => {
+        const itemParaActualizar = await this.getProductById(id);
+
+        if(!itemParaActualizar){
+            console.log('no se encuentra ese id');
+            return;
+        }
+
+        itemParaActualizar[viejoValor] = nuevoValor;
+
+        const list = await this.getProducts();
+
+        await fs.promises.writeFile(this.path, JSON.stringify(list));
+
+        console.log('El producto que fue actualizado:', itemParaActualizar);
+    }
 }
 
 async function crearUsuarios() {
@@ -50,7 +67,10 @@ async function crearUsuarios() {
     await nuevoProducto.addProduct('Matrix', 'nueva realidad', 5, 'thumbnail2', 524234, 30)
 
     console.log(await nuevoProducto.getProducts());
-    await nuevoProducto.getProductById(1);
+    // await nuevoProducto.getProductById(1);
+
+
+    await nuevoProducto.updateProduct(1, 'title', 'nueva pelicula actualizada');
 }
 
 crearUsuarios();
