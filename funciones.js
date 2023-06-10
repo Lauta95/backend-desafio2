@@ -7,7 +7,6 @@ class ProductManager {
         this.format = 'utf-8';
     }
 
-    // ----------------------------------------------------------------------------------
     addProduct = async (title, description, price, thumbnail, code, stock) => {
         const productos = { title, description, price, thumbnail, code, stock }
         const list = await this.getProducts();
@@ -38,9 +37,11 @@ class ProductManager {
         }
     }
 
-    getProductById() = async() => {
-    const buscar = await fs.promises.readFile(this.id, this.format)
-}
+    getProductById = async (id) => {
+        const buscar = await this.getProducts();
+        const buscarObj = buscar.find(item => item.id === id);
+        console.log((buscarObj) ? (`producto encontrado ${JSON.stringify(buscarObj)}`) : ('no se encontró ese id'));
+    }
 }
 
 async function crearUsuarios() {
@@ -49,6 +50,7 @@ async function crearUsuarios() {
     await nuevoProducto.addProduct('Matrix', 'nueva realidad', 5, 'thumbnail2', 524234, 30)
 
     console.log(await nuevoProducto.getProducts());
+    await nuevoProducto.getProductsById(4324);
 }
 
 crearUsuarios();
