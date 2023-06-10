@@ -41,6 +41,7 @@ class ProductManager {
         const buscar = await this.getProducts();
         const buscarObj = buscar.find(item => item.id === id);
         console.log((buscarObj) ? (`producto encontrado ${JSON.stringify(buscarObj)}`) : ('no se encontró ese id'));
+        return buscarObj;
     }
 
     updateProduct = async(id, viejoValor, nuevoValor) => {
@@ -57,20 +58,20 @@ class ProductManager {
 
         await fs.promises.writeFile(this.path, JSON.stringify(list));
 
-        console.log('El producto que fue actualizado:', itemParaActualizar);
+        console.log('archivo actualizado:', itemParaActualizar);
     }
 }
 
 async function crearUsuarios() {
     const nuevoProducto = new ProductManager('archivo.json');
-    await nuevoProducto.addProduct('john wick', 'asesino mafioso', 10, 'thumbnail1', 4324, 20)
-    await nuevoProducto.addProduct('Matrix', 'nueva realidad', 5, 'thumbnail2', 524234, 30)
+    // await nuevoProducto.addProduct('john wick', 'asesino mafioso', 10, 'thumbnail1', 4324, 20)
+    // await nuevoProducto.addProduct('Matrix', 'nueva realidad', 5, 'thumbnail2', 524234, 30)
 
-    console.log(await nuevoProducto.getProducts());
+    // console.log(await nuevoProducto.getProducts());
     // await nuevoProducto.getProductById(1);
 
 
-    await nuevoProducto.updateProduct(1, 'title', 'nueva pelicula actualizada');
+    await nuevoProducto.updateProduct(1, 'title', 'nueva pelicula actualizada2');
 }
 
 crearUsuarios();
