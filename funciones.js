@@ -50,7 +50,7 @@ async function crearUsuarios() {
     await nuevoProducto.addProduct('Matrix', 'nueva realidad', 5, 'thumbnail2', 524234, 30)
 
     console.log(await nuevoProducto.getProducts());
-    await nuevoProducto.getProductsById(4324);
+    await nuevoProducto.getProductById(1);
 }
 
 crearUsuarios();
