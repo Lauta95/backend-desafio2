@@ -8,13 +8,13 @@ class ProductManager {
     }
 
     // ----------------------------------------------------------------------------------
-    createUser = async (title, description, price, thumbnail, code, stock) => {
+    addProduct = async (title, description, price, thumbnail, code, stock) => {
         const productos = { title, description, price, thumbnail, code, stock }
         const list = await this.getProducts();
-        
+
         let idMasGrande = 0;
-        for(const productos of list){
-            if(productos.id > idMasGrande){
+        for (const productos of list) {
+            if (productos.id > idMasGrande) {
                 idMasGrande = productos.id
             }
         }
@@ -22,7 +22,7 @@ class ProductManager {
         productos.id = nuevaId;
 
         list.push(productos);
-        
+
         await fs.promises.writeFile(this.path, JSON.stringify(list));
     }
 
@@ -37,12 +37,16 @@ class ProductManager {
             return []
         }
     }
+
+    getProductById() = async() => {
+    const buscar = await fs.promises.readFile(this.id, this.format)
+}
 }
 
 async function crearUsuarios() {
     const nuevoProducto = new ProductManager('archivo.json');
-    await nuevoProducto.createUser('john wick', 'asesino mafioso', 10, 'thumbnail1', 4324, 20)
-    await nuevoProducto.createUser('Matrix', 'nueva realidad', 5, 'thumbnail2', 524234, 30)
+    await nuevoProducto.addProduct('john wick', 'asesino mafioso', 10, 'thumbnail1', 4324, 20)
+    await nuevoProducto.addProduct('Matrix', 'nueva realidad', 5, 'thumbnail2', 524234, 30)
 
     console.log(await nuevoProducto.getProducts());
 }
