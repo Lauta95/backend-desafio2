@@ -44,34 +44,47 @@ class ProductManager {
         return buscarObj;
     }
 
-    updateProduct = async(id, viejoValor, nuevoValor) => {
-        const itemParaActualizar = await this.getProductById(id);
+    updateProduct = async (id, viejoValor, nuevoValor) => {
+        const listUpdate = await this.getProducts();
 
-        if(!itemParaActualizar){
+        const itemParaActualizar = listUpdate.find((producto) => producto.id === id);
+
+        if (!itemParaActualizar) {
             console.log('no se encuentra ese id');
             return;
         }
 
         itemParaActualizar[viejoValor] = nuevoValor;
 
-        const list = await this.getProducts();
-
-        await fs.promises.writeFile(this.path, JSON.stringify(list));
+        await fs.promises.writeFile(this.path, JSON.stringify(listUpdate));
 
         console.log('archivo actualizado:', itemParaActualizar);
+    }
+
+    deleteProduct = async (id) => {
+        const listDelete = await this.getProducts();
+
+        const newList = listDelete.filter((producto) =>producto.id !== id);
+
+        await fs.promises.writeFile(this.path, JSON.stringify(newList));
+
+        console.log(`el producto de id ${id} fue eliminado`);
     }
 }
 
 async function crearUsuarios() {
     const nuevoProducto = new ProductManager('archivo.json');
-    // await nuevoProducto.addProduct('john wick', 'asesino mafioso', 10, 'thumbnail1', 4324, 20)
-    // await nuevoProducto.addProduct('Matrix', 'nueva realidad', 5, 'thumbnail2', 524234, 30)
+    await nuevoProducto.addProduct('john wick', 'asesino mafioso', 10, 'thumbnail1', 4324, 20)
+    await nuevoProducto.addProduct('Matrix', 'nueva realidad', 5, 'thumbnail2', 524234, 30)
 
-    // console.log(await nuevoProducto.getProducts());
-    // await nuevoProducto.getProductById(1);
+    console.log(await nuevoProducto.getProducts());
+    await nuevoProducto.getProductById(1);
 
-
+    console.log('Productos antes de la actualización:', await nuevoProducto.getProducts());
     await nuevoProducto.updateProduct(1, 'title', 'nueva pelicula actualizada2');
+    await nuevoProducto.updateProduct(2, 'title', 'La otra pelicula tambien modificada');
+
+    await nuevoProducto.deleteProduct(1);
 }
 
 crearUsuarios();
